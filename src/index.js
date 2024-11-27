@@ -163,6 +163,20 @@ app.put("/api/users/:id", (req, res) => {
   });
 });
 
+app.delete("/api/users/:id", (req, res) => {
+    const {id}=req.params;
+    if(isNaN(parseInt(id))){
+        return res.status(400).json({msg:"Invalid user ID"});
+    }
+    const user=usersList.find((user)=>user.id===parseInt(id));
+    if(!user){
+        return res.status(404).json({msg:"User not found"});
+    }    
+    const index=usersList.indexOf(user);
+    usersList.splice(index,1);
+    res.status(200).json({msg:`${user.username} deleted successfully`});
+});
+
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);
